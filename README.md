@@ -45,5 +45,5 @@ Run the following command:
 
 ### `docker-compose -f docker-compose.yaml up -d`
 
-Open [http://localhost:80](http://localhost:3000) to view it in the browser.
+Open [http://localhost:80](http://localhost:3000) to view it in the browser
 
