@@ -26,12 +26,12 @@ pipeline {
             steps {
                 script {
                     def appUrl = 'http://localhost/'
-                    def maxRetries = 5
-                    def retryInterval = 5
+                    def maxRetries = 30
+                    def retryInterval = 10
 
                     for (int i = 0; i < maxRetries; i++) {
                         // Kiểm tra sự sẵn sàng của ứng dụng bằng cách gửi yêu cầu HTTP đến endpoint
-                        def responseCode = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${appUrl}", returnStatus: true).trim()
+                        def responseCode = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${appUrl}", returnStatus: true).toString().trim()
 
                         if (responseCode == '200') {
                             echo 'Ứng dụng đã sẵn sàng.'
