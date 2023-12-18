@@ -28,7 +28,7 @@ pipeline {
                     def appUrl = 'http://localhost/'
                     def responseCode = ''
 
-                    while (responseCode != '200') {
+                    while (responseCode == '200') {
                         responseCode = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${appUrl}", returnStatus: true).toString().trim()
                         echo "Response Code: ${responseCode}"
                         
