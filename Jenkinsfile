@@ -25,15 +25,31 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Bước kiểm thử bằng cách đợi cho đến khi ứng dụng sẵn sàng
-                    timeout(time: 60, unit: 'SECONDS') {
-                        waitUntil {
-                            return sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://localhost/', returnStatus: true) == 200
+                    def appReady = false
+                    def maxRetries = 30
+                    def retryInterval = 10
+
+                    for (int i = 0; i < maxRetries; i++) {
+                        // Kiểm tra sự sẵn sàng của ứng dụng bằng cách gửi yêu cầu HTTP đến health endpoint
+                        def responseCode = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://localhost/health', returnStatus: true)
+
+                        if (responseCode == 200) {
+                            echo 'Ứng dụng đã sẵn sàng.'
+                            appReady = true
+                            break
+                        } else {
+                            echo "Đợi ứng dụng sẵn sàng (lần thử lại ${i + 1}/${maxRetries})..."
+                            sleep retryInterval
                         }
+                    }
+
+                    if (!appReady) {
+                        error 'Không thể kết nối đến ứng dụng sau số lần thử lại đã cho.'
                     }
                 }
             }
         }
+
     }
     
 //     post {
