@@ -26,8 +26,8 @@ pipeline {
             steps {
                 script {
                     def appUrl = 'http://localhost/'
-                    def maxRetries = 30
-                    def retryInterval = 10
+                    def maxRetries = 5
+                    def retryInterval = 5
 
                     for (int i = 0; i < maxRetries; i++) {
                         // Kiểm tra sự sẵn sàng của ứng dụng bằng cách gửi yêu cầu HTTP đến endpoint
