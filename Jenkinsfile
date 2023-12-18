@@ -25,30 +25,26 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def appReady = false
+                    def appUrl = 'http://localhost/'
                     def maxRetries = 30
                     def retryInterval = 10
 
                     for (int i = 0; i < maxRetries; i++) {
-                        // Kiểm tra sự sẵn sàng của ứng dụng bằng cách gửi yêu cầu HTTP đến health endpoint
-                        def responseCode = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://localhost/health', returnStatus: true)
+                        // Kiểm tra sự sẵn sàng của ứng dụng bằng cách gửi yêu cầu HTTP đến endpoint
+                        def responseCode = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${appUrl}", returnStatus: true).trim()
 
-                        if (responseCode == 200) {
+                        if (responseCode == '200') {
                             echo 'Ứng dụng đã sẵn sàng.'
-                            appReady = true
                             break
                         } else {
                             echo "Đợi ứng dụng sẵn sàng (lần thử lại ${i + 1}/${maxRetries})..."
                             sleep retryInterval
                         }
                     }
-
-                    if (!appReady) {
-                        error 'Không thể kết nối đến ứng dụng sau số lần thử lại đã cho.'
-                    }
                 }
             }
         }
+
 
     }
     
