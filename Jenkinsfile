@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     // Bước checkout mã nguồn từ GitHub
-                    git 'https://github.com/GCbeheo/HelloReactJS.git'
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/GCbeheo/HelloReactJS.git']]])
                 }
             }
         }
