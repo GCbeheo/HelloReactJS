@@ -19,10 +19,5 @@ stages:
           demands:
             - VM1
         steps:
-          - task: DockerCompose@0
-            inputs:
-              containerregistrytype: 'Azure Container Registry'
-              azureSubscription: 'Azure subscription 1(fa94a86f-1cd0-4a1c-a291-1cfea912da2e)'
-              dockerComposeFile: '**/docker-compose.yaml'
-              action: 'Run a Docker Compose command'
-              dockerComposeCommand: 'run docker compose'
+          - script: docker compose -f docker-compose.yaml up -d
+            displayName: build step
