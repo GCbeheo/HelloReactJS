@@ -17,7 +17,7 @@ stages:
         pool:
           name: Azure Pipelines
           demands:
-            - VM1
+            - Hosted Agent
         steps:
           - task: DockerCompose@0
             inputs:
