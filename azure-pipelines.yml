@@ -1,20 +1,28 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
 trigger:
-- main
+  - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+resources:
+  - repo: self
 
-steps:
-- checkout: self
-
-- script: |
-    docker-compose -f docker-compose.yaml up -d
-    displayName: 'Run Docker Compose'
-
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: '<Azure-Service-Connection>'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az vm start --name VM1 --resource-group <Resource-Group>
+stages:
+  - stage: Build
+    displayName: Build image
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          name: Azure Pipelines
+          demands:
+            - VM1
+        steps:
+          - task: DockerCompose@0
+            inputs:
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscription: 'Azure subscription 1(fa94a86f-1cd0-4a1c-a291-1cfea912da2e)'
+              dockerComposeFile: '**/docker-compose.yaml'
+              action: 'Run a Docker Compose command'
+              dockerComposeCommand: 'run docker compose'
