@@ -23,4 +23,4 @@ stages:
               azureSubscription: 'Azure subscription 1(fa94a86f-1cd0-4a1c-a291-1cfea912da2e)'
               dockerComposeFile: '**/docker-compose.yaml'
               action: 'Run a Docker Compose command'
-              dockerComposeCommand: 'run docker compose'
+              dockerComposeCommand: 'docker compose -f docker-compose.yaml up -d'
