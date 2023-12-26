@@ -10,13 +10,9 @@ resources:
 
 stages:
   - stage: Build
-    displayName: Build image
     jobs:
       - job: Build
         displayName: Build
-        pool:
-          demands:
-            - VM1
         steps:
           - script: docker compose -f docker-compose.yaml up -d
-            displayName: build step
+            target: VM1
